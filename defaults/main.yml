@@ -1,0 +1,26 @@
+# Configuration variables
+proxysql_mysql_backend_ersion: 5.7
+
+# proxysql admin interface credentials.
+proxysql_datadir: /var/lib/proxysql
+proxysql_username: admin
+proxysql_password: admin
+proxysql_hostname: localhost
+proxysql_port: 6032
+
+# PXC admin credentials for connecting to pxc-cluster-node.
+proxysql_pxc_admin_username: admin
+proxysql_pxc_admin_password: admin
+proxysql_pxc_admin_hostname: localhost
+proxysql_pxc_admin_port: 3306
+
+# proxysql monitoring user. proxysql admin script will create this user in pxc to monitor pxc-nodes.
+proxysql_pxc_monitor_username: monitor
+proxysql_pxc_monitor_password: monit0r
+
+# Application user to connect to pxc-node through proxysql
+proxysql_pxc_user_username: proxysql_user
+proxysql_pxc_user_password: passw0rd
+
+
+proxysql_repo_url: https://repo.percona.com/yum/percona-release-latest.noarch.rpm

@@ -1,0 +1,57 @@
+- name: Installs repository
+  yum:
+    name: "{{ proxysql_repo_url }}"
+    state: present
+
+- name: Configures repositories
+  command: percona-release enable original
+  register: result
+  failed_when: 
+    - result.stderr != ""
+    - "'All done' not in result.stderr"
+  changed_when: result.stderr == ""
+
+- name: Installs proxysql2
+  yum:
+    name: proxysql2
+    state: present
+
+- name: Installs mysql client
+  yum:
+    name: mysql
+    state: present
+
+- name: Generate proxysql configuration
+  template:
+    src:  proxysql.cnf.j2
+    dest: /etc/proxysql.cnf
+    owner: root
+    group: root
+    mode: 0644
+    backup: true
+
+- name: Restart the proxy
+  service:
+    name: proxysql
+    state: started
+    enabled: yes
+
+- name: Generate proxysql-admin configuration
+  template:
+    src:  proxysql-admin.cnf.j2
+    dest: /etc/proxysql-admin.cnf
+    owner: root
+    group: root
+    mode: 0644
+    backup: true
+
+- name: Run proxysql-admin --enable
+  command: proxysql-admin --config-file=/etc/proxysql-admin.cnf --enable --use-existing-monitor-password --without-cluster-app-user
+  register: result
+  failed_when: 
+    - result.stderr != ""
+    - "'ProxySQL has been successfully configured' not in result.stderr"
+  changed_when: result.stderr == ""
+
+# proxysql --initial
+# 2019-06-05 23:49:21 main.cpp:1409:main(): [ERROR] Current RLIMIT_NOFILE is very low: 1024 .  Tune RLIMIT_NOFILE correctly before running ProxySQL

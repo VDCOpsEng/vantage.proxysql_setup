@@ -1,0 +1,48 @@
+# proxysql admin interface credentials.
+export PROXYSQL_DATADIR='{{ proxysql_datadir }}'
+export PROXYSQL_USERNAME='{{ proxysql_username }}'
+export PROXYSQL_PASSWORD='{{ proxysql_password }}'
+export PROXYSQL_HOSTNAME='{{ proxysql_hostname }}'
+export PROXYSQL_PORT='{{ proxysql_port }}'
+
+# PXC admin credentials for connecting to pxc-cluster-node.
+export CLUSTER_USERNAME='{{ proxysql_pxc_admin_username }}'
+export CLUSTER_PASSWORD='{{ proxysql_pxc_admin_password }}'
+export CLUSTER_HOSTNAME='{{ proxysql_pxc_admin_hostname }}'
+export CLUSTER_PORT='{{ proxysql_pxc_admin_port }}'
+
+# proxysql monitoring user. proxysql admin script will create this user in pxc to monitor pxc-nodes.
+export MONITOR_USERNAME="{{ proxysql_pxc_monitor_username }}"
+export MONITOR_PASSWORD="{{ proxysql_pxc_monitor_password }}"
+
+# Application user to connect to pxc-node through proxysql
+export CLUSTER_APP_USERNAME="{{ proxysql_pxc_user_username }}"
+export CLUSTER_APP_PASSWORD="{{ proxysql_pxc_user_password }}"
+
+# ProxySQL hostgroup IDs
+export WRITER_HOSTGROUP_ID='10'
+export READER_HOSTGROUP_ID='11'
+export BACKUP_WRITER_HOSTGROUP_ID='12'
+export OFFLINE_HOSTGROUP_ID='13'
+
+# ProxySQL read/write configuration mode.
+export MODE="singlewrite"
+
+# max_connections default (used only when INSERTing a new mysql_servers entry)
+export MAX_CONNECTIONS="1000"
+
+# Determines the maximum number of writesets a node can have queued
+# before the node is SHUNNED to avoid stale reads.
+export MAX_TRANSACTIONS_BEHIND=100
+
+# Connections to the backend servers (from ProxySQL) will use SSL
+export USE_SSL="no"
+
+# Determines if a node should be added to the reader hostgroup if it has
+# been promoted to the writer hostgroup.
+# If set to 'yes', then all writers (including backup-writers) are added to
+# the read hostgroup.
+# If set to 'no', then none of the writers (including backup-writers) are added.
+# If set to 'backup', then only the backup-writers will be added to
+# the read hostgroup.
+export WRITERS_ARE_READERS="yes"
